@@ -1,5 +1,7 @@
 # penc-chat
-Messagerie entre client et vendeur de l'application Penc
+Objectif : Créer un microservice du chat penc en utilisant NestJS et MongoDB pour permettre aux utilisateurs de communiquer en temps réel avec les vendeurs.
+
+Une description des étapes de développement est disponible [ici](https://docs.google.com/document/d/18nwH458f5NBzl826NrJlpCPprgXIZry0DzmGm3qAzbg/edit)
 
 # Schema d'architecture backend
 ![penc-backend-architecture drawio](https://user-images.githubusercontent.com/9282769/216768687-370c582f-4904-465b-80ce-efbb4ca997c0.png)
