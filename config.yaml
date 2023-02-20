@@ -1,0 +1,42 @@
+# Container context
+- descriptor: "pip-services:context-info:default:default:1.0"
+  name: "messaging"
+  description: "Messaging microservice"
+
+# Console logger
+- descriptor: "pip-services:logger:console:default:1.0"
+  level: "trace"
+
+# Performance counter that post values to log
+- descriptor: "pip-services:counters:log:default:1.0"
+
+- descriptor: pip-services:connection:mongodb:con1:1.0
+  connection:
+    uri: {{{MONGO_SERVICE_URI}}}
+    host: {{{MONGO_SERVICE_HOST}}}{{#unless MONGO_SERVICE_HOST}}localhost{{/unless}}
+    port: {{MONGO_SERVICE_PORT}}{{#unless MONGO_SERVICE_PORT}}27017{{/unless}}
+    database: {{MONGO_DB}}{{#unless MONGO_DB}}penc-chat{{/unless}}
+    
+- descriptor: messaging:persistence:mongodb:default:1.0
+  dependencies:
+    connection: pip-services:connection:mongodb:con1:1.0
+  collection: {{MONGO_COLLECTION}}{{#unless MONGO_COLLECTION}}conversations{{/unless}}
+
+# controller
+- descriptor: "messaging:controller:default:default:1.0"
+
+# Shared HTTP Endpoint
+- descriptor: "pip-services:endpoint:http:default:1.0"
+  connection:
+    protocol: http
+    host: 0.0.0.0
+    port: {{HTTP_PORT}}{{#unless HTTP_PORT}}8080{{/unless}}
+
+# HTTP Service V1
+- descriptor: "messaging:service:http:default:1.0"
+
+# Heartbeat service
+- descriptor: "pip-services:heartbeat-service:http:default:1.0"
+     
+# Status service
+- descriptor: "pip-services:status-service:http:default:1.0"
