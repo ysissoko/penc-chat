@@ -1,0 +1,41 @@
+{
+  "name": "penc-chat",
+  "version": "1.0.0",
+  "description": "Objectif : Créer un microservice du chat penc en utilisant NestJS et MongoDB pour permettre aux utilisateurs de communiquer en temps réel avec les vendeurs.",
+  "main": "run.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "dist/run.js",
+    "dev": "tsc --watch & nodemon dist/run.js",
+    "lint": "eslint src --ext ts",
+    "tsc": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ysissoko/penc-chat.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ysissoko/penc-chat/issues"
+  },
+  "homepage": "https://github.com/ysissoko/penc-chat#readme",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "pip-services3-commons-nodex": "^1.0.*",
+    "pip-services3-components-nodex": "^1.0.*",
+    "pip-services3-container-nodex": "^1.0.*",
+    "pip-services3-data-nodex": "^1.0.*",
+    "pip-services3-mongodb-nodex": "^1.1.0",
+    "pip-services3-rpc-nodex": "^1.0.*"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/jest": "^29.4.0",
+    "@types/morgan": "^1.9.4",
+    "nodemon": "^2.0.20",
+    "ts-jest": "^29.0.5",
+    "typescript": "^4.9.5"
+  }
+}
