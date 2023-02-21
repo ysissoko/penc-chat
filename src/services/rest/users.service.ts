@@ -1,8 +1,8 @@
 import { Descriptor, IReferences } from "pip-services3-commons-nodex";
-import rpc from "pip-services3-rpc-nodex";
+import { RestService } from "pip-services3-rpc-nodex";
 import MessagingController from "../../controllers/messaging.controller";
 
-export class UsersRestService extends rpc.RestService {
+export class UsersRestService extends RestService {
     private _messagingCtrl!: MessagingController;
 
     constructor() {
@@ -18,7 +18,7 @@ export class UsersRestService extends rpc.RestService {
 
     public register() {
         this.registerRoute("get", "/:uid/conversations", null as any, async (req, res) => {
-            const { uid } = req.query;
+            const { uid } = req.params;
             try {
                 let result = await this._messagingCtrl.getUserConversations(uid);
                 this.sendResult(req, res, result);
