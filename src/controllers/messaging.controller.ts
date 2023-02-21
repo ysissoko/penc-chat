@@ -1,4 +1,5 @@
-import { Descriptor, FilterParams, IReferenceable, IReferences, PagingParams } from "pip-services3-commons-nodex";
+import correlator from 'correlation-id';
+import { BadRequestException, Descriptor, FilterParams, IReferenceable, IReferences, NotFoundException, PagingParams } from "pip-services3-commons-nodex";
 import IMessagingPersistence from "../services/mongo/interfaces/messaging-persistence.interface";
 import { Conversation } from "../services/mongo/models/conversation.model";
 import { IMessage } from "../services/mongo/models/message.model";
@@ -13,10 +14,12 @@ export default class MessagingController implements IReferenceable {
     }
 
     public async addMessageToConv(id: string, message: IMessage) {
-        let conv: Conversation = await this._persistence.getOneById("", id);
+        const conv: Conversation = await this.findConv(id);
 
-        if (!conv) 
-            throw new Error('conversation does not exist')
+        if (!conv.participantsUid.includes(message.senderUid))
+            throw new BadRequestException(correlator.getId() ?? "", "CONV_BAD_SENDER_ID", 'the sender is not in the conversation')
+
+        message.date = new Date;
 
         conv.messages.push(message);
         return await this._persistence.update("", conv);
@@ -24,10 +27,28 @@ export default class MessagingController implements IReferenceable {
 
     public async createConv(conv: Conversation) {
         conv.date = new Date;
-        return await this._persistence.create("", conv);
+        conv.messages[0].date = new Date;
+
+        return await this._persistence.create(correlator.getId() ?? "", conv);
+    }
+
+    public async joinConv(id: string, participantUid: string) {
+        const conv: Conversation = await this.findConv(id);
+        conv.participantsUid.push(participantUid);
+
+        return await this._persistence.update(correlator.getId() ?? "", conv);
     }
 
     public async getUserConversations(uid: string) {
-       return await this._persistence.getPageByFilter("", FilterParams.fromTuples("uid", uid), new PagingParams(0, 100))
+        return await this._persistence.getPageByFilter(correlator.getId() ?? "", FilterParams.fromTuples("uid", uid), new PagingParams(0, 100))
+    }
+
+    private async findConv(convId: string) {
+        let conv: Conversation = await this._persistence.getOneById(correlator.getId() ?? "", convId);
+
+        if (!conv)
+            throw new NotFoundException(correlator.getId() ?? "", "CONV_NOT_FOUND", 'conversation does not exist');
+
+        return conv;
     }
 }
