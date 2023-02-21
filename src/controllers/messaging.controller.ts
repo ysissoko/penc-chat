@@ -14,15 +14,20 @@ export default class MessagingController implements IReferenceable {
 
     public async addMessageToConv(id: string, message: IMessage) {
         let conv: Conversation = await this._persistence.getOneById("", id);
+
+        if (!conv) 
+            throw new Error('conversation does not exist')
+
         conv.messages.push(message);
         return await this._persistence.update("", conv);
     }
 
     public async createConv(conv: Conversation) {
+        conv.date = new Date;
         return await this._persistence.create("", conv);
     }
 
     public async getUserConversations(uid: string) {
-        this._persistence.getPageByFilter("", FilterParams.fromTuples("uid", uid), new PagingParams(0, 100))
+       return await this._persistence.getPageByFilter("", FilterParams.fromTuples("uid", uid), new PagingParams(0, 100))
     }
 }
