@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/ysissoko/penc-chat#readme",
   "dependencies": {
+    "correlation-id": "^5.0.0",
     "dotenv": "^16.0.3",
     "pip-services3-commons-nodex": "^1.0.*",
     "pip-services3-components-nodex": "^1.0.*",

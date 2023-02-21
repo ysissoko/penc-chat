@@ -34,11 +34,7 @@
 
 # HTTP Service V1
 - descriptor: "messaging:service:http:default:1.0"
-
-- descriptor: "conversations:service:http:default:1.0"
-
-- descriptor: "users:service:http:default:1.0"
-
+  version: "v2"
 
 # Heartbeat service
 - descriptor: "pip-services:heartbeat-service:http:default:1.0"
