@@ -8,7 +8,8 @@
     "start": "dist/run.js",
     "dev": "tsc --watch & nodemon dist/run.js",
     "lint": "eslint src --ext ts",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "commit": "cz"
   },
   "repository": {
     "type": "git",
