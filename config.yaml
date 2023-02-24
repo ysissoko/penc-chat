@@ -34,7 +34,7 @@
 
 # HTTP Service V1
 - descriptor: "messaging:service:http:default:1.0"
-  version: "v2"
+  version: "v1"
 
 # Heartbeat service
 - descriptor: "pip-services:heartbeat-service:http:default:1.0"
