@@ -2,7 +2,7 @@ import { Descriptor } from "pip-services3-commons-nodex";
 import { Factory } from "pip-services3-components-nodex";
 import MessagingController from "../../controllers/messaging.controller";
 import MessagingDbPersistence from "../mongo/messaging-db-persistence.service";
-import MessagingRestService from "../rest/messaging.service";
+import MessagingRestServiceV1 from "../rest/messaging-v1.service";
 
 export default class MessagingServiceFactory extends Factory {
     constructor() {
@@ -15,7 +15,7 @@ export default class MessagingServiceFactory extends Factory {
 
         this.registerAsType(
             new Descriptor('messaging', 'service', 'http', '*', '1.0'),
-            MessagingRestService
+            MessagingRestServiceV1
         );
 
         this.registerAsType(
