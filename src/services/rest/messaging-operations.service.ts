@@ -6,6 +6,7 @@ import { Conversation } from "../mongo/models/conversation.model";
 import { IMessage } from "../mongo/models/message.model";
 import convSchema from "./schemas/conv.schema";
 import messageSchema from "./schemas/message.schema";
+import productSchema from "./schemas/product.schema";
 import Utils from "./schemas/utils";
 
 export default class MessagingRestOperations extends RestOperations {
@@ -47,10 +48,13 @@ export default class MessagingRestOperations extends RestOperations {
                 Utils.validateSchema(conv.messages.length, new Schema().withRule(new ValueComparisonRule("GTE", 1)));
                 const firstMessage: IMessage = conv.messages[0];
                 Utils.validateSchema(firstMessage, messageSchema);
+                // validate the product associated to the conversation
+                Utils.validateSchema(conv.product, productSchema);
 
                 let result = await this._messagingCtrl.createConv(req.body);
                 this.sendResult(req, res, result);
             } catch (ex) {
+                console.error(ex)
                 this.sendError(req, res, ex);
             }
         });

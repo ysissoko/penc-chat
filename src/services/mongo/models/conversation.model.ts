@@ -9,4 +9,5 @@ export class Conversation implements IIdentifiable<string> {
     date: Date = new Date;
     participantsUid: string[] = [];
     messages: IMessage[] = [];
+    product!: { id: number, shopId: number };
 }
