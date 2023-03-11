@@ -27,6 +27,7 @@ export default class MessagingDbPersistence extends IdentifiableMongoDbPersisten
         }
 
         let uid: string = filter.getAsNullableString("uid");
+
         if (uid)
             criteria.push({ 'participants.uid': uid });
 
