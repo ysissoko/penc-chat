@@ -4,9 +4,11 @@ import { RestOperations } from "pip-services3-rpc-nodex";
 import MessagingController from "../../controllers/messaging.controller";
 import { Conversation } from "../mongo/models/conversation.model";
 import { IMessage } from "../mongo/models/message.model";
+import categorySchema from './schemas/category.schema';
 import convSchema from "./schemas/conv.schema";
 import messageSchema from "./schemas/message.schema";
 import productSchema from "./schemas/product.schema";
+import shopSchema from './schemas/shop.schema';
 import Utils from "./schemas/utils";
 
 export default class MessagingRestOperations extends RestOperations {
@@ -43,13 +45,17 @@ export default class MessagingRestOperations extends RestOperations {
             try {
                 Utils.validateSchema(conv, convSchema);
                 // Should be at least 2 participants in the conversation
-                Utils.validateSchema(conv.participantsUid.length, new Schema().withRule(new ValueComparisonRule("GTE", 2)));
+                Utils.validateSchema(conv.participants.length, new Schema().withRule(new ValueComparisonRule("GTE", 2)));
                 // Check messages length should be at least the first message
                 Utils.validateSchema(conv.messages.length, new Schema().withRule(new ValueComparisonRule("GTE", 1)));
                 const firstMessage: IMessage = conv.messages[0];
                 Utils.validateSchema(firstMessage, messageSchema);
                 // validate the product associated to the conversation
                 Utils.validateSchema(conv.product, productSchema);
+                // validate category
+                Utils.validateSchema(conv.product.category, categorySchema);
+                // validate shop
+                Utils.validateSchema(conv.shop, shopSchema);
 
                 let result = await this._messagingCtrl.createConv(req.body);
                 this.sendResult(req, res, result);
