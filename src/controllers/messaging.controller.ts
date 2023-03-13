@@ -3,6 +3,7 @@ import { BadRequestException, Descriptor, FilterParams, IReferenceable, IReferen
 import IMessagingPersistence from "../services/mongo/interfaces/messaging-persistence.interface";
 import { Conversation } from "../services/mongo/models/conversation.model";
 import { IMessage } from "../services/mongo/models/message.model";
+import { IUser } from '../services/mongo/models/user.model';
 
 export default class MessagingController implements IReferenceable {
     _persistence!: IMessagingPersistence;
@@ -16,7 +17,7 @@ export default class MessagingController implements IReferenceable {
     public async addMessageToConv(id: string, message: IMessage) {
         const conv: Conversation = await this.findConv(id);
 
-        if (!conv.participantsUid.includes(message.senderUid))
+        if (!conv.participants.find((user: IUser) => user.uid === message.senderUid))
             throw new BadRequestException(correlator.getId() ?? "", "CONV_BAD_SENDER_ID", 'the sender is not in the conversation')
 
         message.date = new Date;
@@ -32,9 +33,9 @@ export default class MessagingController implements IReferenceable {
         return await this._persistence.create(correlator.getId() ?? "", conv);
     }
 
-    public async joinConv(id: string, participantUid: string) {
+    public async joinConv(id: string, participant: IUser) {
         const conv: Conversation = await this.findConv(id);
-        conv.participantsUid.push(participantUid);
+        conv.participants.push(participant);
 
         return await this._persistence.update(correlator.getId() ?? "", conv);
     }

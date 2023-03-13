@@ -27,8 +27,9 @@ export default class MessagingDbPersistence extends IdentifiableMongoDbPersisten
         }
 
         let uid: string = filter.getAsNullableString("uid");
+
         if (uid)
-            criteria.push({ participantsUid: uid });
+            criteria.push({ 'participants.uid': uid });
 
         let dateInf: Date = filter.getAsNullableDateTime("dateInf");
         let dateSup: Date = filter.getAsNullableDateTime("dateSup");
